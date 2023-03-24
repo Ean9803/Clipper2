@@ -26,9 +26,10 @@ namespace ClipperDemo1
       //LoopThruTestPolygons(110, 113);     // display test range
       //LoopThruTestPolygons(46);           // display one
 
-      SquaresTest(true);
-      TrianglesTest(true);
-      DiamondsTest(true);
+      //SquaresTest(true);
+      //TrianglesTest(true);
+      //DiamondsTest(true);
+      SquareTest(true);
     }
 
     public static Paths64 Polytree_Union(Paths64 subjects, FillRule fillrule)
@@ -140,6 +141,27 @@ namespace ClipperDemo1
       SvgUtils.AddSubject(svg, subjects);
       SvgUtils.AddSolution(svg, solution, false);
       string filename = @"..\..\..\diamonds.svg";
+      SvgUtils.SaveToFile(svg, filename, fillrule, w, h, 10);
+      ClipperFileIO.OpenFileWithDefaultApp(filename);
+    }
+
+    public static void SquareTest(bool test_polytree = false)
+    {
+      const int w = 800, h = 600;
+      FillRule fillrule = FillRule.NonZero;
+
+      PathsD subj = new PathsD();
+      PathsD clip = new PathsD();
+      subj.Add(Clipper.MakePath(new double[] { 10, 10, 50, 10, 50, 50, 10, 50 }));
+      clip.Add(Clipper.MakePath(new double[] { 25, 25, 31, 33, 67, 16, 56, -8 }));
+
+      PathsD solution = Clipper.BooleanOp(ClipType.Difference, subj, clip, FillRule.NonZero, 3);
+      solution = Clipper.InflatePaths(solution, -5, JoinType.Round, EndType.Polygon);
+
+      SvgWriter svg = new SvgWriter();
+      SvgUtils.AddSubject(svg, subj);
+      SvgUtils.AddSolution(svg, solution, false);
+      string filename = @"..\..\..\Test.svg";
       SvgUtils.SaveToFile(svg, filename, fillrule, w, h, 10);
       ClipperFileIO.OpenFileWithDefaultApp(filename);
     }
