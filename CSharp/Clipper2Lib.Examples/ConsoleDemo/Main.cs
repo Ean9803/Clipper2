@@ -163,7 +163,8 @@ namespace ClipperDemo1
 
       SvgWriter svg = new SvgWriter();
       SvgUtils.AddSubject(svg, subj);
-      SvgUtils.AddSolution(svg, solution, false);
+      SvgUtils.AddSolution(svg, solution, true);
+      SvgUtils.AddCaption(svg, "Paths: " + solution.Count, 60, 60);
       string filename = @"..\..\..\Test.svg";
       SvgUtils.SaveToFile(svg, filename, fillrule, w, h, 10);
       ClipperFileIO.OpenFileWithDefaultApp(filename);
